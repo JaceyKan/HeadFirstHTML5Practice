@@ -20,6 +20,8 @@ function displayLocation(position) {
 	var km = computeDistance(position.coords, ourCoords);
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
+	
+	showMap(position.coords);
 }
 
 function displayError(error) {
@@ -36,9 +38,8 @@ function displayError(error) {
 	}
 
 	var div = document.getElementById("location");
-	div.innerHTML = errorMessage + " " + error.message;
+	div.innerHTML = errorMessage;
 
-	showMap(position.coords);
 }
 
 function computeDistance(startCoords, destCoords) {
@@ -77,7 +78,7 @@ function showMap(coords) {
 	var mapOptions = {
 		zoom: 10,
 		center: googleLatAndLong,
-		mapTypeId: google.maps.mapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
 	console.log(googleLatAndLong);
