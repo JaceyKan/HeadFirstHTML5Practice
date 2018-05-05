@@ -4,8 +4,27 @@ function getMyLocation() {
 	if(navigator.geolocation) {
 		//console.log(navigator.geolocation);
 		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
+		
+		var watchButton = document.getElementById("watch");
+		watchButton.onclick = watchLocation;
+
+		var clearWatchButton = document.getElementById("clearWatch");
+		clearWatchButton.onclick = clearWatch;
 	} else {
 		alert("Oops, no geolocation support");
+	}
+}
+
+var watchId = null;
+
+function watchLocation(){
+	watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+}
+
+function clearWatch(){
+	if(watchId){
+		navigator.geolocation.clearWatch(watchId);
+		watchId = null;
 	}
 }
 
@@ -22,7 +41,10 @@ function displayLocation(position) {
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
 	
-	showMap(position.coords);
+	if (map == null) {
+		showMap(position.coords);
+	}
+
 }
 
 function displayError(error) {
