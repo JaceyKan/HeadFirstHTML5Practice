@@ -4,36 +4,36 @@ function getMyLocation() {
 	if(navigator.geolocation) {
 		//console.log(navigator.geolocation);
 		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
-<<<<<<< HEAD
-=======
 		
 		var watchButton = document.getElementById("watch");
 		watchButton.onclick = watchLocation;
 
 		var clearWatchButton = document.getElementById("clearWatch");
 		clearWatchButton.onclick = clearWatch;
->>>>>>> gh-pages
 	} else {
 		alert("Oops, no geolocation support");
 	}
 }
 
-<<<<<<< HEAD
-=======
 var watchId = null;
-
+var options = {enableHighAccuracy: true, timeout: 300, maximumAge: 100};
 function watchLocation(){
-	watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+	watchId = navigator.geolocation.watchPosition(displayLocation,
+												  displayError,
+												  options);
+	//console.log(watchId);
 }
 
 function clearWatch(){
-	if(watchId){
+	//console.log("test");
+	if(watchId != null){
+		//console.log("test2");
 		navigator.geolocation.clearWatch(watchId);
+		console.log(watchId);
 		watchId = null;
 	}
 }
 
->>>>>>> gh-pages
 function displayLocation(position) {
 	//console.log(position);
 	var latitude = position.coords.latitude;
@@ -41,22 +41,18 @@ function displayLocation(position) {
 
 	var div = document.getElementById("location");
 	div.innerHTML = "Your are at Latitude: " + latitude + ", Longitude: " + longitude;
-<<<<<<< HEAD
-=======
 	div.innerHTML += " (with" + position.coords.accuracy + " meters accuracy)";
->>>>>>> gh-pages
 
 	var km = computeDistance(position.coords, ourCoords);
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
-<<<<<<< HEAD
-=======
-	
+
 	if (map == null) {
 		showMap(position.coords);
 	}
 
->>>>>>> gh-pages
+	div.innerHTML += " (found in " + options.timeout + " milliseconds)";
+
 }
 
 function displayError(error) {
@@ -73,14 +69,15 @@ function displayError(error) {
 	}
 
 	var div = document.getElementById("location");
-<<<<<<< HEAD
-	div.innerHTML = errorMessage + " " + error.message;
-
-	showMap(position.coords);
-=======
 	div.innerHTML = errorMessage;
 
->>>>>>> gh-pages
+	options.timeout += 100;
+	navigator.geolocation.getCurrentPosition(
+		displayLocation,
+		displayError,
+		options);
+	div.innerHTML += ".....checking again with timeout=" + options.timeout;
+
 }
 
 function computeDistance(startCoords, destCoords) {
@@ -119,14 +116,6 @@ function showMap(coords) {
 	var mapOptions = {
 		zoom: 10,
 		center: googleLatAndLong,
-<<<<<<< HEAD
-		mapTypeId: google.maps.mapTypeId.ROADMAP
-	};
-
-	console.log(googleLatAndLong);
-	var mapDiv = document.getElementById("map");
-	map = new google.maps.Map(mapDiv, mapOptions);
-=======
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
@@ -159,5 +148,4 @@ function addMarker(map, latlong, title, content) {
 	google.maps.event.addListener(marker, "click", function(){
 		infoWindow.open(map);
 	});
->>>>>>> gh-pages
 }
