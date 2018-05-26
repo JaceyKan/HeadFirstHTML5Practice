@@ -13,21 +13,59 @@ alert(jsonString);
 
 var jsonMovieObject = JSON.parse(jsonString);
 alert("JSON Movie is " + jsonMovieObject.title);*/
-
 window.onload = function() {
-	var url = "sales.json";
+/*	var url = "http://gumball.wickedlysmart.com";
 	var request = new XMLHttpRequest();
 	request.open("GET", url);
 	request.onload = function() {
-		if(request.state == 200) {
+		if(request.status == 200) {
 			updateSales(request.responseText);
-		}
+		} 
+		console.log(request);
 	};
 
-	request.send(null);
+	request.send(null);*/
+	//addScript();
+	setInterval(addScript, 3000);
+}
 
-	function updateSales(responseText) {
-		var salesDiv = document.getElementById("sales");
-		salesDiv.innerHTML = responseText;
+var lastReportTime = 0;
+
+function addScript() {
+	var url="http://gumball.wickedlysmart.com?callback=updateSales" + 
+			"&random=" + (new Date()).getTime() + 
+			 "&lastreporttime="+lastReportTime;
+	var body = document.getElementsByTagName("body")[0];
+	var script = document.createElement("script");
+	script.setAttribute("id", "jsonpScript");
+	script.setAttribute("src", url);
+	console.log(url);
+	//console.log()
+
+	var jsonpScript = document.getElementById("jsonpScript");
+	if (jsonpScript) {
+		body.removeChild(jsonpScript);
+		//console.log(url);
+	}
+
+	body.appendChild(script);
+}
+
+function updateSales(sales) {
+	console.log(sales);
+	var salesDiv = document.getElementById("sales");
+	//salesDiv.innerHTML = responseText;
+/*		sales = JSON.parse(responseText);
+*/		//console.log(sales);
+	for (var i=0; i<sales.length; i++) {
+		//string += sales[i].name + "  ";
+		var div = document.createElement("div");
+		div.setAttribute("class", "saleItem");
+		div.innerHTML = sales[i].name + " sold " + sales[i].sales + " gumballs";
+		salesDiv.appendChild(div);
+	}
+
+	if(sales.length > 0) {
+		lastReportTime = sales[sales.length-1].time;
 	}
 }
