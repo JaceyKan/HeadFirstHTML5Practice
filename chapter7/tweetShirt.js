@@ -89,19 +89,19 @@ function drawSquare(canvas, context) {
 
 function fillBackgroundColor(canvas, context) {
 	var backgroundColor = document.getElementById("backgroundColor").value;
-/*	console.log(backgroundColor);
-*/
+	console.log(backgroundColor);
+
 	context.fillStyle = backgroundColor;
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	
-	console.log("badckground");
+	//console.log("badckground");
 
 }
 
 function updateTweets(tweets) {
 	//console.log(tweets);
 	var tweetsElement = document.getElementById("tweets");
-	console.log(tweetsElement);
+	//console.log(tweetsElement);
 
 	for(var i=0; i<tweets.length; i++) {
 		var optionElement = document.createElement("option");
